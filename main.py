@@ -4,7 +4,7 @@ import uvicorn
 app = FastAPI()
 
 
-@app.get("/api/stripe/payment")
+@app.get("/api/stripe/webhook")
 async def stripe_payment():
     return "hello there"
 
