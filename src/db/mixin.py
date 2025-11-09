@@ -1,0 +1,36 @@
+"""Reusable SQLAlchemy mixins."""
+
+import uuid
+from datetime import datetime, timezone
+
+from sqlalchemy import DateTime
+from sqlalchemy.orm import Mapped, mapped_column
+
+
+class BaseMixin:
+    """Base mixin with common fields for all models.
+
+    Provides:
+        - UUID primary key
+        - created_at timestamp
+        - updated_at timestamp
+    """
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        primary_key=True,
+        default=uuid.uuid4,
+        nullable=False,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
