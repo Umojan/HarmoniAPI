@@ -53,5 +53,15 @@ class Settings(BaseSettings):
     upload_dir: str = "uploads"
     max_upload_size_mb: int = 10
 
+    # Calculator
+    calculator_calorie_deficit: int = 500
+    calculator_calorie_surplus: int = 300
+    calculator_min_age: int = 15
+    calculator_max_age: int = 120
+    calculator_min_weight_kg: int = 30
+    calculator_max_weight_kg: int = 300
+    calculator_min_height_cm: int = 100
+    calculator_max_height_cm: int = 250
+
 
 settings = Settings()
