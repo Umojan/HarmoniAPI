@@ -13,7 +13,7 @@
 - [x] 3.1 Register calculator router in `src/main.py`
 
 ## 4. Validation
-- [ ] 4.1 Verify endpoint responds correctly with valid input
-- [ ] 4.2 Verify validation errors for invalid biometric data
-- [ ] 4.3 Verify tariff recommendation logic with multiple tariff scenarios
-- [ ] 4.4 Confirm no database models created (stateless calculation)
+- [x] 4.1 Verify endpoint responds correctly with valid input
+- [x] 4.2 Verify validation errors for invalid biometric data
+- [x] 4.3 Verify tariff recommendation logic with multiple tariff scenarios
+- [x] 4.4 Confirm no database models created (stateless calculation)
