@@ -1,0 +1,15 @@
+[variables]
+UV_COMPILE_BYTECODE = "1"
+UV_LINK_MODE = "copy"
+
+[phases.setup]
+nixPkgs = ["pandoc", "postgresql"]
+
+[phases.install]
+cmds = [
+  "curl -LsSf https://astral.sh/uv/install.sh | sh",
+  "uv sync --frozen --no-dev"
+]
+
+[start]
+cmd = "uv run -m src.main"
