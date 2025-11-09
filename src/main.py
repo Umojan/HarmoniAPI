@@ -140,14 +140,20 @@ def create_app() -> FastAPI:
             },
         )
 
+    # Mount static files
+    from fastapi.staticfiles import StaticFiles
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+
     # Include routers
     from src.modules.admin.routes import router as admin_router
+    from src.modules.admin_panel.routes import router as admin_panel_router
     from src.modules.files.routes import router as files_router
     from src.modules.tariffs.routes import router as tariffs_router
 
     app.include_router(admin_router, prefix="/auth", tags=["auth"])
     app.include_router(tariffs_router, prefix="/api", tags=["tariffs"])
     app.include_router(files_router, prefix="/api", tags=["files"])
+    app.include_router(admin_panel_router, tags=["admin-panel"])
 
     return app
 

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Tariffs{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">Tariff Plans</h1>
+            <a href="{{ url_for('admin_create_tariff') }}" class="btn btn-primary">+ Create Tariff</a>
+        </div>
+
+        {% if tariffs %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Calories</th>
+                        <th>Price</th>
+                        <th>Files</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tariff in tariffs %}
+                    <tr>
+                        <td>
+                            <strong>{{ tariff.name }}</strong>
+                            {% if tariff.description %}
+                            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                                {{ tariff.description[:60] }}{% if tariff.description|length > 60 %}...{% endif %}
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if tariff.calories %}
+                                {{ tariff.calories }} kcal
+                            {% else %}
+                                <span style="color: var(--text-secondary);">—</span>
+                            {% endif %}
+                        </td>
+                        <td class="price">${{ (tariff.base_price / 100) | round(2) }}</td>
+                        <td>{{ tariff.file_count }} files</td>
+                        <td>{{ tariff.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="{{ url_for('admin_edit_tariff', tariff_id=tariff.id) }}" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Edit</a>
+                                <a href="{{ url_for('admin_tariff_files', tariff_id=tariff.id) }}" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Files</a>
+                                <form method="POST" action="{{ url_for('admin_delete_tariff', tariff_id=tariff.id) }}" style="display: inline;" onsubmit="return confirmDelete('Delete tariff \'{{ tariff.name }}\'? This will also delete all associated files.')">
+                                    <button type="submit" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px;">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h3 class="empty-title">No tariffs yet</h3>
+            <p class="empty-text">Create your first tariff plan to get started</p>
+            <a href="{{ url_for('admin_create_tariff') }}" class="btn btn-primary">+ Create First Tariff</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

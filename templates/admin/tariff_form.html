@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}{% if tariff %}Edit Tariff{% else %}Create Tariff{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">{% if tariff %}Edit Tariff{% else %}Create New Tariff{% endif %}</h1>
+        </div>
+
+        <form method="POST" action="{% if tariff %}{{ url_for('admin_edit_tariff', tariff_id=tariff.id) }}{% else %}{{ url_for('admin_create_tariff') }}{% endif %}">
+            <div class="form-group">
+                <label for="name">Tariff Name *</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="e.g., Fit Start, Balance, Energy"
+                    value="{{ tariff.name if tariff else '' }}"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Describe what makes this tariff special..."
+                >{{ tariff.description if tariff else '' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="calories">Daily Calories</label>
+                <input
+                    type="number"
+                    id="calories"
+                    name="calories"
+                    placeholder="e.g., 1500"
+                    min="0"
+                    value="{{ tariff.calories if tariff and tariff.calories else '' }}"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="base_price">Price (in cents) *</label>
+                <input
+                    type="number"
+                    id="base_price"
+                    name="base_price"
+                    required
+                    placeholder="e.g., 2990 for $29.90"
+                    min="1"
+                    value="{{ tariff.base_price if tariff else '' }}"
+                >
+                <small style="display: block; margin-top: 8px; color: var(--text-secondary);">
+                    Enter price in cents (e.g., 2990 = $29.90)
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label>Features</label>
+                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                    <input
+                        type="text"
+                        id="feature-input"
+                        placeholder="Enter a feature and press Enter"
+                        style="flex: 1;"
+                    >
+                    <button type="button" onclick="addFeature()" class="btn btn-secondary">Add</button>
+                </div>
+                <div id="features-container" class="feature-tags">
+                    {% if tariff and tariff.features %}
+                        {% for feature in tariff.features %}
+                        <div class="feature-tag">
+                            <span>{{ feature }}</span>
+                            <button type="button" onclick="removeFeature(this)">×</button>
+                            <input type="hidden" name="features" value="{{ feature }}">
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 32px;">
+                <button type="submit" class="btn btn-primary">
+                    {% if tariff %}Update Tariff{% else %}Create Tariff{% endif %}
+                </button>
+                <a href="{{ url_for('admin_tariffs') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

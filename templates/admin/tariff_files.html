@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tariff.name }} - Files{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <h1 class="card-title">{{ tariff.name }}</h1>
+                <p style="color: var(--text-secondary); margin-top: 4px;">Manage PDF files for this tariff</p>
+            </div>
+            <a href="{{ url_for('admin_tariffs') }}" class="btn btn-secondary">← Back to Tariffs</a>
+        </div>
+
+        <!-- Upload Form -->
+        <div style="margin-bottom: 32px;">
+            <h3 style="font-size: 18px; margin-bottom: 16px;">Upload New File</h3>
+            <form method="POST" action="{{ url_for('admin_upload_file', tariff_id=tariff.id) }}" enctype="multipart/form-data">
+                <div class="file-upload" onclick="document.getElementById('file-input').click()">
+                    <input
+                        type="file"
+                        id="file-input"
+                        name="file"
+                        accept="application/pdf"
+                        required
+                        onchange="handleFileUpload(this)"
+                    >
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">Click to upload PDF</div>
+                    <div class="upload-hint">Maximum file size: 10 MB</div>
+                </div>
+                <div id="file-preview" style="margin-top: 16px;"></div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 16px;">Upload File</button>
+            </form>
+        </div>
+
+        <!-- Files List -->
+        {% if files %}
+        <h3 style="font-size: 18px; margin-bottom: 16px;">Uploaded Files ({{ files|length }})</h3>
+        <ul class="file-list">
+            {% for file in files %}
+            <li class="file-item">
+                <div class="file-info">
+                    <span class="file-icon">📄</span>
+                    <div>
+                        <div class="file-name">{{ file.filename }}</div>
+                        <div class="file-size">{{ (file.file_size / 1024 / 1024) | round(2) }} MB • Uploaded {{ file.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                    </div>
+                </div>
+                <form method="POST" action="{{ url_for('admin_delete_file', file_id=file.id) }}" style="display: inline;" onsubmit="return confirmDelete('Delete file \'{{ file.filename }}\'?')">
+                    <button type="submit" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px;">Delete</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📁</div>
+            <h3 class="empty-title">No files uploaded yet</h3>
+            <p class="empty-text">Upload PDF files for this tariff plan</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
