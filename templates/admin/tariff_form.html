@@ -9,7 +9,7 @@
             <h1 class="card-title">{% if tariff %}Edit Tariff{% else %}Create New Tariff{% endif %}</h1>
         </div>
 
-        <form method="POST" action="{% if tariff %}{{ url_for('admin_edit_tariff', tariff_id=tariff.id) }}{% else %}{{ url_for('admin_create_tariff') }}{% endif %}">
+        <form method="POST" action="{% if tariff %}/admin/tariffs/{{ tariff.id }}/edit{% else %}/admin/tariffs/create{% endif %}">
             <div class="form-group">
                 <label for="name">Tariff Name *</label>
                 <input
@@ -87,7 +87,7 @@
                 <button type="submit" class="btn btn-primary">
                     {% if tariff %}Update Tariff{% else %}Create Tariff{% endif %}
                 </button>
-                <a href="{{ url_for('admin_tariffs') }}" class="btn btn-secondary">Cancel</a>
+                <a href="/admin/tariffs" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

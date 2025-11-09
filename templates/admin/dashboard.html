@@ -13,7 +13,7 @@
             <div class="card" style="margin: 0;">
                 <h3 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Total Tariffs</h3>
                 <p style="font-size: 36px; font-weight: 700; margin-bottom: 4px;">{{ stats.total_tariffs }}</p>
-                <a href="{{ url_for('admin_tariffs') }}" class="btn btn-secondary" style="margin-top: 16px;">Manage Tariffs →</a>
+                <a href="/admin/tariffs" class="btn btn-secondary" style="margin-top: 16px;">Manage Tariffs →</a>
             </div>
 
             <div class="card" style="margin: 0;">
@@ -36,8 +36,8 @@
         </div>
 
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-            <a href="{{ url_for('admin_create_tariff') }}" class="btn btn-primary">+ Create New Tariff</a>
-            <a href="{{ url_for('admin_tariffs') }}" class="btn btn-secondary">View All Tariffs</a>
+            <a href="/admin/tariffs/create" class="btn btn-primary">+ Create New Tariff</a>
+            <a href="/admin/tariffs" class="btn btn-secondary">View All Tariffs</a>
         </div>
     </div>
 </div>

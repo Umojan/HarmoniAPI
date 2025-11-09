@@ -10,13 +10,13 @@
                 <h1 class="card-title">{{ tariff.name }}</h1>
                 <p style="color: var(--text-secondary); margin-top: 4px;">Manage PDF files for this tariff</p>
             </div>
-            <a href="{{ url_for('admin_tariffs') }}" class="btn btn-secondary">← Back to Tariffs</a>
+            <a href="/admin/tariffs" class="btn btn-secondary">← Back to Tariffs</a>
         </div>
 
         <!-- Upload Form -->
         <div style="margin-bottom: 32px;">
             <h3 style="font-size: 18px; margin-bottom: 16px;">Upload New File</h3>
-            <form method="POST" action="{{ url_for('admin_upload_file', tariff_id=tariff.id) }}" enctype="multipart/form-data">
+            <form method="POST" action="/admin/tariffs/{{ tariff.id }}/files/upload" enctype="multipart/form-data">
                 <div class="file-upload" onclick="document.getElementById('file-input').click()">
                     <input
                         type="file"
@@ -48,7 +48,7 @@
                         <div class="file-size">{{ (file.file_size / 1024 / 1024) | round(2) }} MB • Uploaded {{ file.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
                     </div>
                 </div>
-                <form method="POST" action="{{ url_for('admin_delete_file', file_id=file.id) }}" style="display: inline;" onsubmit="return confirmDelete('Delete file \'{{ file.filename }}\'?')">
+                <form method="POST" action="/admin/files/{{ file.id }}/delete" style="display: inline;" onsubmit="return confirmDelete('Delete file \'{{ file.filename }}\'?')">
                     <button type="submit" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px;">Delete</button>
                 </form>
             </li>

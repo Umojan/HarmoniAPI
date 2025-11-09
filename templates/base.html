@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Admin Panel{% endblock %} - HarmoniAPI</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/admin.css') }}">
+    <link rel="stylesheet" href="/static/css/admin.css">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     {% if current_admin %}
     <header>
         <nav>
-            <a href="{{ url_for('admin_dashboard') }}" class="logo">Harmoni Admin</a>
+            <a href="/admin/dashboard" class="logo">Harmoni Admin</a>
             <ul class="nav-links">
-                <li><a href="{{ url_for('admin_dashboard') }}" {% if active_page == 'dashboard' %}class="active"{% endif %}>Dashboard</a></li>
-                <li><a href="{{ url_for('admin_tariffs') }}" {% if active_page == 'tariffs' %}class="active"{% endif %}>Tariffs</a></li>
+                <li><a href="/admin/dashboard" {% if active_page == 'dashboard' %}class="active"{% endif %}>Dashboard</a></li>
+                <li><a href="/admin/tariffs" {% if active_page == 'tariffs' %}class="active"{% endif %}>Tariffs</a></li>
             </ul>
             <div class="user-menu">
                 <span class="user-email">{{ current_admin.email }}</span>
-                <a href="{{ url_for('admin_logout') }}" class="btn btn-secondary">Logout</a>
+                <a href="/admin/logout" class="btn btn-secondary">Logout</a>
             </div>
         </nav>
     </header>
@@ -36,7 +36,7 @@
 
     {% block content %}{% endblock %}
 
-    <script src="{{ url_for('static', path='/js/admin.js') }}"></script>
+    <script src="/static/js/admin.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

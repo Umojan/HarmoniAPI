@@ -7,7 +7,7 @@
     <div class="card">
         <div class="card-header">
             <h1 class="card-title">Tariff Plans</h1>
-            <a href="{{ url_for('admin_create_tariff') }}" class="btn btn-primary">+ Create Tariff</a>
+            <a href="/admin/tariffs/create" class="btn btn-primary">+ Create Tariff</a>
         </div>
 
         {% if tariffs %}
@@ -46,9 +46,9 @@
                         <td>{{ tariff.created_at.strftime('%Y-%m-%d') }}</td>
                         <td>
                             <div class="table-actions">
-                                <a href="{{ url_for('admin_edit_tariff', tariff_id=tariff.id) }}" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Edit</a>
-                                <a href="{{ url_for('admin_tariff_files', tariff_id=tariff.id) }}" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Files</a>
-                                <form method="POST" action="{{ url_for('admin_delete_tariff', tariff_id=tariff.id) }}" style="display: inline;" onsubmit="return confirmDelete('Delete tariff \'{{ tariff.name }}\'? This will also delete all associated files.')">
+                                <a href="/admin/tariffs/{{ tariff.id }}/edit" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Edit</a>
+                                <a href="/admin/tariffs/{{ tariff.id }}/files" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Files</a>
+                                <form method="POST" action="/admin/tariffs/{{ tariff.id }}/delete" style="display: inline;" onsubmit="return confirmDelete('Delete tariff \'{{ tariff.name }}\'? This will also delete all associated files.')">
                                     <button type="submit" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px;">Delete</button>
                                 </form>
                             </div>
@@ -63,7 +63,7 @@
             <div class="empty-icon">📋</div>
             <h3 class="empty-title">No tariffs yet</h3>
             <p class="empty-text">Create your first tariff plan to get started</p>
-            <a href="{{ url_for('admin_create_tariff') }}" class="btn btn-primary">+ Create First Tariff</a>
+            <a href="/admin/tariffs/create" class="btn btn-primary">+ Create First Tariff</a>
         </div>
         {% endif %}
     </div>
