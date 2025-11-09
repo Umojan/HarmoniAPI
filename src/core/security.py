@@ -3,12 +3,10 @@
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 
 from src.core.settings import settings
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -21,7 +19,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     Returns:
         True if password matches hash
     """
-    return pwd_context.verify(plain_password, hashed_password)
+    return bcrypt.checkpw(
+        plain_password.encode('utf-8'),
+        hashed_password.encode('utf-8')
+    )
 
 
 def get_password_hash(password: str) -> str:
@@ -31,9 +32,13 @@ def get_password_hash(password: str) -> str:
         password: Plain text password
 
     Returns:
-        Hashed password
+        Hashed password (bcrypt hash as string)
     """
-    return pwd_context.hash(password)
+    # Bcrypt has a 72-byte limit
+    password_bytes = password.encode('utf-8')[:72]
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password_bytes, salt)
+    return hashed.decode('utf-8')
 
 
 def create_access_token(data: dict[str, Any], expires_delta: timedelta | None = None) -> str:

@@ -27,7 +27,8 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
 
     # Stripe
-    stripe_api_key: str = ""
+    stripe_secret_key: str = ""
+    stripe_public_key: str = ""
     stripe_webhook_secret: str = ""
 
     # Email
@@ -43,6 +44,10 @@ class Settings(BaseSettings):
 
     # CORS
     cors_origins: list[str] = ["http://localhost:3000"]
+
+    # Admin
+    first_admin_email: str
+    first_admin_password: str
 
 
 settings = Settings()

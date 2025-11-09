@@ -8,6 +8,4 @@ Import pattern in env.py:
 """
 
 # Import all models here as they are created
-# Example:
-# from src.modules.tariffs.models import Tariff
-# from src.modules.orders.models import Order
+from src.modules.admin.models import Admin  # noqa: F401
