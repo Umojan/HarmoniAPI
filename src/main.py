@@ -25,6 +25,13 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("Application startup: initializing resources...")
 
+    # Ensure upload directories exist
+    from pathlib import Path
+    upload_dir = Path(settings.upload_dir)
+    tariffs_dir = upload_dir / "tariffs"
+    tariffs_dir.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Upload directory ensured: {tariffs_dir}")
+
     # Ensure first admin exists
     from src.db.engine import async_session_factory
     from src.modules.admin.service import AdminService
@@ -135,8 +142,12 @@ def create_app() -> FastAPI:
 
     # Include routers
     from src.modules.admin.routes import router as admin_router
+    from src.modules.files.routes import router as files_router
+    from src.modules.tariffs.routes import router as tariffs_router
 
     app.include_router(admin_router, prefix="/auth", tags=["auth"])
+    app.include_router(tariffs_router, prefix="/api", tags=["tariffs"])
+    app.include_router(files_router, prefix="/api", tags=["files"])
 
     return app
 

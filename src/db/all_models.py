@@ -9,3 +9,11 @@ Import pattern in env.py:
 
 # Import all models here as they are created
 from src.modules.admin.models import Admin  # noqa: F401
+from src.modules.files.models import TariffFile  # noqa: F401
+from src.modules.tariffs.models import Tariff  # noqa: F401
+
+__all__ = [
+    "Admin",
+    "Tariff",
+    "TariffFile",
+]

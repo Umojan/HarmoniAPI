@@ -49,5 +49,9 @@ class Settings(BaseSettings):
     first_admin_email: str
     first_admin_password: str
 
+    # File Upload
+    upload_dir: str = "uploads"
+    max_upload_size_mb: int = 10
+
 
 settings = Settings()
