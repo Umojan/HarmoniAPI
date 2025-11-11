@@ -31,16 +31,9 @@ class Settings(BaseSettings):
     stripe_public_key: str = ""
     stripe_webhook_secret: str = ""
 
-    # Email
-    smtp_host: str = "smtp.gmail.com"
-    smtp_port: int = 587
-    smtp_user: str = ""
-    smtp_password: str = ""
-    smtp_from: str = ""
-
-    # Telegram
-    telegram_bot_token: str = ""
-    telegram_chat_id: str = ""
+    # Resend
+    resend_api_key: str = "hogrider"
+    resend_from_email: str = "onboarding@harmoni.com"
 
     # CORS
     cors_origins: list[str] = ["http://localhost:3000"]
@@ -62,6 +55,34 @@ class Settings(BaseSettings):
     calculator_max_weight_kg: int = 300
     calculator_min_height_cm: int = 100
     calculator_max_height_cm: int = 250
+
+    # Email Verification
+    verification_code_ttl_minutes: int = 10
+    verification_code_length: int = 6
+    verification_rate_limit_seconds: int = 60
+    verification_max_attempts: int = 5
+
+    # Payment Email Templates
+    payment_success_email_subject: str = "Payment Successful - {tariff_name}"
+    payment_success_email_body: str = """Hello {name},
+
+Your payment for {tariff_name} was successful!
+Amount: {amount} {currency}
+
+Your materials are attached to this email.
+
+Thank you for choosing Harmoni!"""
+
+    payment_failure_email_subject: str = "Payment Failed - {tariff_name}"
+    payment_failure_email_body: str = """Hello {name},
+
+Unfortunately, your payment for {tariff_name} was not successful.
+Reason: {reason}
+
+Please try again or contact support if you need assistance.
+
+Best regards,
+Harmoni Team"""
 
 
 settings = Settings()

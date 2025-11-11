@@ -20,7 +20,7 @@ from src.modules.admin.service import AdminService
 logger = get_logger(__name__)
 
 # OAuth2 scheme for Swagger UI (displays "Authorize" button)
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/admin/auth/login")
 
 
 async def get_current_admin(

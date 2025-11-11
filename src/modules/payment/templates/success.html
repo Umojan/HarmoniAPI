@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Harmoni</title>
+    <link rel="stylesheet" href="/static/payment/css/payment.css">
+</head>
+<body>
+    <div class="container">
+        <div class="result-card success">
+            <div class="icon-circle success">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <path d="M20 30L12 22L14.5 19.5L20 25L33.5 11.5L36 14L20 30Z" fill="currentColor"/>
+                </svg>
+            </div>
+
+            <h1>Payment Successful!</h1>
+            <p class="result-message">
+                Your payment has been processed successfully. <br>
+                We've sent your meal plan to <strong>{{ email }}</strong>
+            </p>
+
+            <div class="info-box">
+                <p><strong>What's next?</strong></p>
+                <ul>
+                    <li>Check your email for the PDF meal plan</li>
+                    <li>If you don't see it, check your spam folder</li>
+                    <li>Contact support if you need help</li>
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <a href="https://simplest-arrow-687167.framer.app/" class="btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

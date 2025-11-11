@@ -147,15 +147,23 @@ def create_app() -> FastAPI:
     # Include routers
     from src.modules.admin.routes import router as admin_router
     from src.modules.admin_panel.routes import router as admin_panel_router
+    from src.modules.auth.routes import router as auth_router
     from src.modules.calculator.routes import router as calculator_router
     from src.modules.files.routes import router as files_router
+    from src.modules.payment.routes import html_router as payment_html_router
+    from src.modules.payment.routes import router as payment_router
     from src.modules.tariffs.routes import router as tariffs_router
+    from src.modules.users.routes import router as users_router
 
-    app.include_router(admin_router, prefix="/auth", tags=["auth"])
+    app.include_router(admin_router, prefix="/admin/auth", tags=["admin-auth"])
+    app.include_router(auth_router, prefix="/api/auth", tags=["email-verification"])
+    app.include_router(payment_router, prefix="/api", tags=["payments"])
+    app.include_router(users_router, prefix="/api", tags=["users"])
     app.include_router(tariffs_router, prefix="/api", tags=["tariffs"])
     app.include_router(files_router, prefix="/api", tags=["files"])
     app.include_router(calculator_router, prefix="/api", tags=["calculator"])
     app.include_router(admin_panel_router, tags=["admin-panel"])
+    app.include_router(payment_html_router, tags=["payment-pages"])
 
     return app
 
