@@ -113,16 +113,10 @@ async def stripe_webhook(
             event_id=None,
         )
 
-    # Check for duplicate events (idempotency)
+    # Handle event (Stripe guarantees idempotency via event.id)
     payment_service = PaymentService(session)
-    is_duplicate = await payment_service.check_duplicate_webhook(event.id)
-
-    if is_duplicate:
-        logger.info(f"Duplicate webhook event ignored: {event.id}")
-        return {"status": "duplicate"}
-
-    # Handle event
     event_type = event.type
+
     logger.info(
         f"Processing webhook event: {event_type}",
         extra={

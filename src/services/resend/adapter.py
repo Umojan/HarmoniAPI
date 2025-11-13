@@ -1,5 +1,6 @@
 """Resend email service adapter."""
 
+import asyncio
 from pathlib import Path
 
 import resend
@@ -61,7 +62,8 @@ class ResendAdapter:
                 """,
             }
 
-            email_response = resend.Emails.send(params)
+            # Run blocking Resend call in thread pool
+            email_response = await asyncio.to_thread(resend.Emails.send, params)
             logger.info(
                 f"Verification code sent to {to_email}",
                 extra={"email_id": email_response.get("id"), "recipient": to_email},
@@ -134,7 +136,8 @@ class ResendAdapter:
                 if attachments:
                     params["attachments"] = attachments
 
-            email_response = resend.Emails.send(params)
+            # Run blocking Resend call in thread pool
+            email_response = await asyncio.to_thread(resend.Emails.send, params)
             logger.info(
                 f"Payment success email sent to {to_email}",
                 extra={
@@ -187,7 +190,8 @@ class ResendAdapter:
                 "html": f"<html><body><pre>{body}</pre></body></html>",
             }
 
-            email_response = resend.Emails.send(params)
+            # Run blocking Resend call in thread pool
+            email_response = await asyncio.to_thread(resend.Emails.send, params)
             logger.info(
                 f"Payment failure email sent to {to_email}",
                 extra={
