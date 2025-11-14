@@ -175,7 +175,9 @@ async def main() -> None:
     """Run the FastAPI application with uvicorn."""
     import uvicorn
 
-    setup_logging(level="DEBUG" if settings.debug else "INFO")
+    # Always use INFO level to prevent Railway rate limit (500 logs/sec)
+    # DEBUG mode only affects reload and other dev features
+    setup_logging(level="INFO")
 
     logger.info(f"Starting {settings.app_name} v{settings.app_version}")
     logger.info(f"Debug mode: {settings.debug}")
@@ -185,7 +187,7 @@ async def main() -> None:
         app=app,
         host="0.0.0.0",
         port=8123,
-        log_level="debug" if settings.debug else "info",
+        log_level="info",  # Always INFO to reduce log volume
         reload=settings.debug,
     )
     server = uvicorn.Server(config)

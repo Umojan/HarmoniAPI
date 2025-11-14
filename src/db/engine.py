@@ -16,9 +16,11 @@ from src.core.settings import settings
 logger = get_logger(__name__)
 
 # Create async engine
+# Note: echo is disabled to prevent excessive logging (500 logs/sec Railway limit)
+# For SQL debugging, use echo_pool='debug' or enable sqlalchemy.engine logger
 engine = create_async_engine(
     settings.database_url,
-    echo=settings.debug,
+    echo=False,  # Disable SQL query logging
     pool_pre_ping=True,
     future=True,
 )
