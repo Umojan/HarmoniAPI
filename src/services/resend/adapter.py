@@ -46,17 +46,17 @@ class ResendAdapter:
             params: resend.Emails.SendParams = {
                 "from": self.from_email,
                 "to": [to_email],
-                "subject": "Your Harmoni Verification Code",
+                "subject": "Код верификации Harmoni",
                 "html": f"""
                     <html>
                         <body>
-                            <h2>Welcome to Harmoni, {name}!</h2>
-                            <p>Your verification code is:</p>
+                            <h2>Добро пожаловать в Harmoni, {name}!</h2>
+                            <p>Ваш код верификации:</p>
                             <h1 style="color: #4CAF50; letter-spacing: 5px;">{code}</h1>
-                            <p>This code will expire in {settings.verification_code_ttl_minutes} minutes.</p>
-                            <p>If you didn't request this code, please ignore this email.</p>
+                            <p>Этот код истекает через {settings.verification_code_ttl_minutes} минут.</p>
+                            <p>Если вы не запрашивали этот код, просто проигнорируйте это письмо.</p>
                             <br>
-                            <p>Best regards,<br>Harmoni Team</p>
+                            <p>С уважением,<br>Команда Harmoni</p>
                         </body>
                     </html>
                 """,
@@ -204,6 +204,61 @@ class ResendAdapter:
         except Exception as e:
             logger.error(
                 f"Failed to send payment failure email to {to_email}: {str(e)}",
+                exc_info=True,
+            )
+            raise
+
+    async def send_contact_form(
+        self,
+        name: str,
+        email: str,
+        phone: str,
+        telegram: str | None,
+        comment: str,
+    ) -> None:
+        """Send contact form notification to owner.
+
+        Args:
+            name: Client name
+            email: Client email
+            phone: Client phone number
+            telegram: Optional Telegram nickname
+            comment: Client comment/message
+
+        Raises:
+            Exception: If email sending fails
+        """
+        try:
+            subject = settings.contact_form_email_subject.format(name=name)
+            body = settings.contact_form_email_body.format(
+                name=name,
+                email=email,
+                phone=phone,
+                telegram=telegram or "Не указан",
+                comment=comment,
+            )
+
+            params: resend.Emails.SendParams = {
+                "from": self.from_email,
+                "to": [settings.owner_email],
+                "subject": subject,
+                "html": f"<html><body><pre>{body}</pre></body></html>",
+            }
+
+            # Run blocking Resend call in thread pool
+            email_response = await asyncio.to_thread(resend.Emails.send, params)
+            logger.info(
+                f"Contact form email sent to owner",
+                extra={
+                    "email_id": email_response.get("id"),
+                    "client_email": email,
+                    "client_name": name,
+                },
+            )
+
+        except Exception as e:
+            logger.error(
+                f"Failed to send contact form email: {str(e)}",
                 exc_info=True,
             )
             raise

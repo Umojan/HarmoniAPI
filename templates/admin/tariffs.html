@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Tariffs{% endblock %}
+{% block title %}Тарифы{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h1 class="card-title">Tariff Plans</h1>
-            <a href="/admin/tariffs/create" class="btn btn-primary">+ Create Tariff</a>
+            <h1 class="card-title">Тарифные планы</h1>
+            <a href="/admin/tariffs/create" class="btn btn-primary">+ Создать тариф</a>
         </div>
 
         {% if tariffs %}
@@ -15,12 +15,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Calories</th>
-                        <th>Price</th>
-                        <th>Files</th>
-                        <th>Created</th>
-                        <th>Actions</th>
+                        <th>Название</th>
+                        <th>Калории</th>
+                        <th>Цена</th>
+                        <th>Файлы</th>
+                        <th>Создан</th>
+                        <th>Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,20 +36,20 @@
                         </td>
                         <td>
                             {% if tariff.calories %}
-                                {{ tariff.calories }} kcal
+                                {{ tariff.calories }} ккал
                             {% else %}
                                 <span style="color: var(--text-secondary);">—</span>
                             {% endif %}
                         </td>
                         <td class="price">${{ (tariff.base_price / 100) | round(2) }}</td>
-                        <td>{{ tariff.file_count }} files</td>
+                        <td>{{ tariff.file_count }} файлов</td>
                         <td>{{ tariff.created_at.strftime('%Y-%m-%d') }}</td>
                         <td>
                             <div class="table-actions">
-                                <a href="/admin/tariffs/{{ tariff.id }}/edit" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Edit</a>
-                                <a href="/admin/tariffs/{{ tariff.id }}/files" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Files</a>
-                                <form method="POST" action="/admin/tariffs/{{ tariff.id }}/delete" style="display: inline;" onsubmit="return confirmDelete('Delete tariff \'{{ tariff.name }}\'? This will also delete all associated files.')">
-                                    <button type="submit" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px;">Delete</button>
+                                <a href="/admin/tariffs/{{ tariff.id }}/edit" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Редактировать</a>
+                                <a href="/admin/tariffs/{{ tariff.id }}/files" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">Файлы</a>
+                                <form method="POST" action="/admin/tariffs/{{ tariff.id }}/delete" style="display: inline;" onsubmit="return confirmDelete('Удалить тариф \'{{ tariff.name }}\'? Это также удалит все связанные файлы.')">
+                                    <button type="submit" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px;">Удалить</button>
                                 </form>
                             </div>
                         </td>
@@ -61,9 +61,9 @@
         {% else %}
         <div class="empty-state">
             <div class="empty-icon">📋</div>
-            <h3 class="empty-title">No tariffs yet</h3>
-            <p class="empty-text">Create your first tariff plan to get started</p>
-            <a href="/admin/tariffs/create" class="btn btn-primary">+ Create First Tariff</a>
+            <h3 class="empty-title">Нет тарифов</h3>
+            <p class="empty-text">Создайте свой первый тарифный план для начала работы</p>
+            <a href="/admin/tariffs/create" class="btn btn-primary">+ Создать первый тариф</a>
         </div>
         {% endif %}
     </div>

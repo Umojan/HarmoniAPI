@@ -1,74 +1,74 @@
 {% extends "base.html" %}
 
-{% block title %}{% if tariff %}Edit Tariff{% else %}Create Tariff{% endif %}{% endblock %}
+{% block title %}{% if tariff %}Редактировать тариф{% else %}Создать тариф{% endif %}{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h1 class="card-title">{% if tariff %}Edit Tariff{% else %}Create New Tariff{% endif %}</h1>
+            <h1 class="card-title">{% if tariff %}Редактировать тариф{% else %}Создать новый тариф{% endif %}</h1>
         </div>
 
         <form method="POST" action="{% if tariff %}/admin/tariffs/{{ tariff.id }}/edit{% else %}/admin/tariffs/create{% endif %}">
             <div class="form-group">
-                <label for="name">Tariff Name *</label>
+                <label for="name">Название тарифа *</label>
                 <input
                     type="text"
                     id="name"
                     name="name"
                     required
-                    placeholder="e.g., Fit Start, Balance, Energy"
+                    placeholder="например, Старт, Баланс, Энергия"
                     value="{{ tariff.name if tariff else '' }}"
                 >
             </div>
 
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="description">Описание</label>
                 <textarea
                     id="description"
                     name="description"
-                    placeholder="Describe what makes this tariff special..."
+                    placeholder="Опишите особенности данного тарифа..."
                 >{{ tariff.description if tariff else '' }}</textarea>
             </div>
 
             <div class="form-group">
-                <label for="calories">Daily Calories</label>
+                <label for="calories">Калории в день</label>
                 <input
                     type="number"
                     id="calories"
                     name="calories"
-                    placeholder="e.g., 1500"
+                    placeholder="например, 1500"
                     min="0"
                     value="{{ tariff.calories if tariff and tariff.calories else '' }}"
                 >
             </div>
 
             <div class="form-group">
-                <label for="base_price">Price (in cents) *</label>
+                <label for="base_price">Цена (в центах) *</label>
                 <input
                     type="number"
                     id="base_price"
                     name="base_price"
                     required
-                    placeholder="e.g., 2990 for $29.90"
+                    placeholder="например, 2990 для $29.90"
                     min="1"
                     value="{{ tariff.base_price if tariff else '' }}"
                 >
                 <small style="display: block; margin-top: 8px; color: var(--text-secondary);">
-                    Enter price in cents (e.g., 2990 = $29.90)
+                    Введите цену в центах (например, 2990 = $29.90)
                 </small>
             </div>
 
             <div class="form-group">
-                <label>Features</label>
+                <label>Особенности</label>
                 <div style="display: flex; gap: 8px; margin-bottom: 8px;">
                     <input
                         type="text"
                         id="feature-input"
-                        placeholder="Enter a feature and press Enter"
+                        placeholder="Введите особенность и нажмите Enter"
                         style="flex: 1;"
                     >
-                    <button type="button" onclick="addFeature()" class="btn btn-secondary">Add</button>
+                    <button type="button" onclick="addFeature()" class="btn btn-secondary">Добавить</button>
                 </div>
                 <div id="features-container" class="feature-tags">
                     {% if tariff and tariff.features %}
@@ -85,9 +85,9 @@
 
             <div style="display: flex; gap: 12px; margin-top: 32px;">
                 <button type="submit" class="btn btn-primary">
-                    {% if tariff %}Update Tariff{% else %}Create Tariff{% endif %}
+                    {% if tariff %}Обновить тариф{% else %}Создать тариф{% endif %}
                 </button>
-                <a href="/admin/tariffs" class="btn btn-secondary">Cancel</a>
+                <a href="/admin/tariffs" class="btn btn-secondary">Отмена</a>
             </div>
         </form>
     </div>

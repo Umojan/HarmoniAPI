@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Вход{% endblock %}
 
 {% block content %}
 <div class="auth-container">
     <div class="auth-card">
-        <h1 class="auth-title">Welcome Back</h1>
-        <p class="auth-subtitle">Sign in to access the admin panel</p>
+        <h1 class="auth-title">Добро пожаловать</h1>
+        <p class="auth-subtitle">Войдите для доступа к админ-панели</p>
 
         {% if error %}
         <div class="alert alert-error">
@@ -29,18 +29,18 @@
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Пароль</label>
                 <input
                     type="password"
                     id="password"
                     name="password"
                     required
-                    placeholder="Enter your password"
+                    placeholder="Введите ваш пароль"
                 >
             </div>
 
             <button type="submit" class="btn btn-primary btn-block">
-                Sign In
+                Войти
             </button>
         </form>
     </div>

@@ -30,3 +30,20 @@ class CheckEmailResponse(BaseModel):
 
     email: str
     is_verified: bool
+
+
+class ContactFormRequest(BaseModel):
+    """Request schema for contact form submission."""
+
+    name: str = Field(..., min_length=1, max_length=100)
+    email: EmailStr
+    phone: str = Field(..., min_length=5, max_length=20)
+    telegram: str | None = Field(None, max_length=100)
+    comment: str = Field(..., min_length=1, max_length=1000)
+
+
+class ContactFormResponse(BaseModel):
+    """Response schema for contact form submission."""
+
+    message: str
+    email: str

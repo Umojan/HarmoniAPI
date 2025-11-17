@@ -7,6 +7,8 @@ from src.core.logging import get_logger
 from src.db.engine import get_session
 from src.modules.auth.schemas import (
     CheckEmailResponse,
+    ContactFormRequest,
+    ContactFormResponse,
     SendVerificationCodeRequest,
     VerificationResponse,
     VerifyCodeRequest,
@@ -122,3 +124,51 @@ async def check_email(
         email=email,
         is_verified=user is not None and user.is_verified,
     )
+
+
+@router.post(
+    "/contact-form",
+    response_model=ContactFormResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def submit_contact_form(
+    request_data: ContactFormRequest,
+) -> ContactFormResponse:
+    """Submit contact form for individual consultation request.
+
+    Sends email notification to owner with client details.
+
+    Args:
+        request_data: Contact form data (name, email, phone, telegram, comment)
+
+    Returns:
+        ContactFormResponse confirming submission
+
+    Raises:
+        EmailServiceException: If email service fails (503)
+    """
+    from src.modules.auth.exceptions import EmailServiceException
+    from src.services.resend.adapter import resend_adapter
+
+    try:
+        await resend_adapter.send_contact_form(
+            name=request_data.name,
+            email=request_data.email,
+            phone=request_data.phone,
+            telegram=request_data.telegram,
+            comment=request_data.comment,
+        )
+
+        logger.info(
+            f"Contact form submitted: {request_data.email}",
+            extra={"client_name": request_data.name},
+        )
+
+        return ContactFormResponse(
+            message="Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время!",
+            email=request_data.email,
+        )
+
+    except Exception as e:
+        logger.error(f"Failed to process contact form: {str(e)}", exc_info=True)
+        raise EmailServiceException(reason=str(e))

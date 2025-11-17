@@ -1,43 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Панель управления{% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h1 class="card-title">Dashboard</h1>
+            <h1 class="card-title">Панель управления</h1>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
             <div class="card" style="margin: 0;">
-                <h3 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Total Tariffs</h3>
+                <h3 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Всего тарифов</h3>
                 <p style="font-size: 36px; font-weight: 700; margin-bottom: 4px;">{{ stats.total_tariffs }}</p>
-                <a href="/admin/tariffs" class="btn btn-secondary" style="margin-top: 16px;">Manage Tariffs →</a>
+                <a href="/admin/tariffs" class="btn btn-secondary" style="margin-top: 16px;">Управление тарифами →</a>
             </div>
 
             <div class="card" style="margin: 0;">
-                <h3 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Total Files</h3>
+                <h3 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Всего файлов</h3>
                 <p style="font-size: 36px; font-weight: 700; margin-bottom: 4px;">{{ stats.total_files }}</p>
-                <p style="font-size: 14px; color: var(--text-secondary);">{{ (stats.total_file_size / 1024 / 1024) | round(2) }} MB stored</p>
+                <p style="font-size: 14px; color: var(--text-secondary);">{{ (stats.total_file_size / 1024 / 1024) | round(2) }} МБ сохранено</p>
             </div>
 
             <div class="card" style="margin: 0;">
-                <h3 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Admins</h3>
+                <h3 style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Администраторы</h3>
                 <p style="font-size: 36px; font-weight: 700; margin-bottom: 4px;">{{ stats.total_admins }}</p>
-                <p style="font-size: 14px; color: var(--text-secondary);">Active accounts</p>
+                <p style="font-size: 14px; color: var(--text-secondary);">Активные аккаунты</p>
             </div>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Quick Actions</h2>
+            <h2 class="card-title">Быстрые действия</h2>
         </div>
 
         <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-            <a href="/admin/tariffs/create" class="btn btn-primary">+ Create New Tariff</a>
-            <a href="/admin/tariffs" class="btn btn-secondary">View All Tariffs</a>
+            <a href="/admin/tariffs/create" class="btn btn-primary">+ Создать новый тариф</a>
+            <a href="/admin/tariffs" class="btn btn-secondary">Посмотреть все тарифы</a>
         </div>
     </div>
 </div>

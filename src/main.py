@@ -156,7 +156,7 @@ def create_app() -> FastAPI:
     from src.modules.users.routes import router as users_router
 
     app.include_router(admin_router, prefix="/admin/auth", tags=["admin-auth"])
-    app.include_router(auth_router, prefix="/api/auth", tags=["email-verification"])
+    app.include_router(auth_router, prefix="/api/auth", tags=["email"])
     app.include_router(payment_router, prefix="/api", tags=["payments"])
     app.include_router(users_router, prefix="/api", tags=["users"])
     app.include_router(tariffs_router, prefix="/api", tags=["tariffs"])

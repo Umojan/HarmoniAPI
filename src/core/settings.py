@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     # Resend
     resend_api_key: str = "hogrider"
     resend_from_email: str = "onboarding@harmoni.com"
+    owner_email: str = "harmonifood.main@gmail.com"
 
     # CORS
     cors_origins: list[str] = ["http://localhost:3000"]
@@ -63,26 +64,38 @@ class Settings(BaseSettings):
     verification_max_attempts: int = 5
 
     # Payment Email Templates
-    payment_success_email_subject: str = "Payment Successful - {tariff_name}"
-    payment_success_email_body: str = """Hello {name},
+    payment_success_email_subject: str = "Оплата успешна - {tariff_name}"
+    payment_success_email_body: str = """Здравствуйте, {name}!
 
-Your payment for {tariff_name} was successful!
-Amount: {amount} {currency}
+Ваш платеж за {tariff_name} прошел успешно!
+Сумма: {amount} {currency}
 
-Your materials are attached to this email.
+Ваши материалы прикреплены к этому письму.
 
-Thank you for choosing Harmoni!"""
+Спасибо, что выбрали Harmoni!"""
 
-    payment_failure_email_subject: str = "Payment Failed - {tariff_name}"
-    payment_failure_email_body: str = """Hello {name},
+    payment_failure_email_subject: str = "Ошибка оплаты - {tariff_name}"
+    payment_failure_email_body: str = """Здравствуйте, {name}!
 
-Unfortunately, your payment for {tariff_name} was not successful.
-Reason: {reason}
+К сожалению, ваш платеж за {tariff_name} не прошел.
+Причина: {reason}
 
-Please try again or contact support if you need assistance.
+Пожалуйста, попробуйте снова или свяжитесь с поддержкой.
 
-Best regards,
-Harmoni Team"""
+С уважением,
+Команда Harmoni"""
+
+    # Contact Form Email Templates
+    contact_form_email_subject: str = "Новая заявка на консультацию - {name}"
+    contact_form_email_body: str = """Получена новая заявка на индивидуальную консультацию:
+
+Имя: {name}
+Email: {email}
+Телефон: {phone}
+Telegram: {telegram}
+
+Комментарий:
+{comment}"""
 
 
 settings = Settings()

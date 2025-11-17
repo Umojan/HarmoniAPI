@@ -84,7 +84,7 @@ async def admin_login(
                 "admin/login.html",
                 {
                     "request": request,
-                    "error": "Invalid email or password",
+                    "error": "Неверный email или пароль",
                     "email": email
                 }
             )
@@ -114,7 +114,7 @@ async def admin_login(
             "admin/login.html",
             {
                 "request": request,
-                "error": "An error occurred. Please try again.",
+                "error": "Произошла ошибка. Пожалуйста, попробуйте снова.",
                 "email": email
             }
         )
