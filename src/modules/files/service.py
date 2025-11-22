@@ -218,14 +218,19 @@ class FileService:
         return result.scalar_one_or_none()
 
     async def increment_download_count(self, download_uuid: uuid.UUID) -> None:
-        """Increment download count for a link.
+        """Increment download count for a link with row-level locking.
 
         Args:
             download_uuid: Download link UUID
         """
         from src.modules.files.models import DownloadLink
 
-        stmt = select(DownloadLink).where(DownloadLink.download_uuid == download_uuid)
+        # Use SELECT FOR UPDATE to lock the row and prevent race conditions
+        stmt = (
+            select(DownloadLink)
+            .where(DownloadLink.download_uuid == download_uuid)
+            .with_for_update()
+        )
         result = await self.session.execute(stmt)
         link = result.scalar_one_or_none()
 

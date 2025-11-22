@@ -169,11 +169,11 @@ async def download_file(
             detail="Ссылка на скачивание не найдена",
         )
 
-    # Check download limit
+    # Check download limit BEFORE incrementing
     if download_link.downloads_count >= download_link.max_downloads:
         raise HTTPException(
             status_code=status.HTTP_410_GONE,
-            detail=f"Лимит скачиваний исчерпан ({download_link.max_downloads} из {download_link.max_downloads})",
+            detail=f"Лимит скачиваний исчерпан ({download_link.downloads_count}/{download_link.max_downloads})",
         )
 
     # Get file record
@@ -195,7 +195,7 @@ async def download_file(
             detail="Файл не найден на сервере",
         )
 
-    # Increment download count
+    # Increment download count BEFORE returning file
     await file_service.increment_download_count(download_uuid)
     await session.commit()
 
