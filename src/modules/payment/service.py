@@ -236,7 +236,7 @@ class PaymentService:
                         file_id=file_record.id,
                         user_email=user.email,
                     )
-                    download_url = f"{settings.download_base_url}/files/download/{download_link.download_uuid}"
+                    download_url = f"{settings.download_base_url}/api/files/download/{download_link.download_uuid}"
                     download_links.append({
                         "filename": file_record.filename,
                         "url": download_url,

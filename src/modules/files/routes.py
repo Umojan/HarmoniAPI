@@ -139,7 +139,7 @@ async def delete_file(
 
 
 @router.get(
-    "/download/{download_uuid}",
+    "/files/download/{download_uuid}",
     status_code=status.HTTP_200_OK,
 )
 async def download_file(
