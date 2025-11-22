@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Harmoni</title>
+    <title>Оформление заказа - KatBalance</title>
     <link rel="stylesheet" href="/static/payment/css/payment.css">
     <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -11,27 +11,27 @@
     <div class="container">
         <div class="checkout-card">
             <div class="logo">
-                <h1>Harmoni</h1>
+                <h1>KatBalance</h1>
             </div>
 
-            <!-- Step 1: Tariff Selection (if no tariff_id) -->
+            <!-- Шаг 1: Выбор тарифа (если tariff_id не передан) -->
             <div id="step-tariff" class="step" style="display: none;">
-                <h2>Select Your Plan</h2>
+                <h2>Выберите план</h2>
                 <div id="tariff-list" class="tariff-list">
-                    <!-- Tariffs loaded dynamically -->
+                    <!-- Тарифы загружаются динамически -->
                 </div>
             </div>
 
-            <!-- Step 2: User Information -->
+            <!-- Шаг 2: Информация о пользователе -->
             <div id="step-user-info" class="step">
-                <h2>Your Information</h2>
+                <h2>Ваши данные</h2>
                 <form id="user-info-form">
                     <div class="form-group">
-                        <label for="name">First Name</label>
+                        <label for="name">Имя</label>
                         <input type="text" id="name" name="name" required minlength="1" maxlength="100">
                     </div>
                     <div class="form-group">
-                        <label for="surname">Last Name</label>
+                        <label for="surname">Фамилия</label>
                         <input type="text" id="surname" name="surname" required minlength="1" maxlength="100">
                     </div>
                     <div class="form-group">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="error-message" id="user-info-error"></div>
                     <button type="submit" class="btn-primary" id="btn-user-info">
-                        <span class="btn-text">Continue</span>
+                        <span class="btn-text">Продолжить</span>
                         <span class="btn-spinner" style="display: none;">
                             <svg class="spinner" viewBox="0 0 50 50">
                                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
@@ -50,18 +50,18 @@
                 </form>
             </div>
 
-            <!-- Step 3: Email Verification -->
+            <!-- Шаг 3: Подтверждение Email -->
             <div id="step-verification" class="step" style="display: none;">
-                <h2>Verify Your Email</h2>
-                <p class="verification-text">We sent a 6-digit code to <strong id="verification-email"></strong></p>
+                <h2>Подтвердите Email</h2>
+                <p class="verification-text">Мы отправили 6-значный код на <strong id="verification-email"></strong></p>
                 <form id="verification-form">
                     <div class="form-group">
-                        <label for="code">Verification Code</label>
+                        <label for="code">Код подтверждения</label>
                         <input type="text" id="code" name="code" required pattern="[0-9]{6}" maxlength="6" placeholder="000000" inputmode="numeric">
                     </div>
                     <div class="error-message" id="verification-error"></div>
                     <button type="submit" class="btn-primary" id="btn-verify">
-                        <span class="btn-text">Verify</span>
+                        <span class="btn-text">Подтвердить</span>
                         <span class="btn-spinner" style="display: none;">
                             <svg class="spinner" viewBox="0 0 50 50">
                                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
@@ -71,28 +71,28 @@
                 </form>
                 <div class="resend-container">
                     <button id="btn-resend" class="btn-link" disabled>
-                        Resend code <span id="resend-timer">(60s)</span>
+                        Отправить код повторно <span id="resend-timer">(60с)</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Step 4: Payment -->
+            <!-- Шаг 4: Оплата -->
             <div id="step-payment" class="step" style="display: none;">
-                <h2>Payment Details</h2>
+                <h2>Данные для оплаты</h2>
                 <div class="order-summary">
                     <div class="summary-row">
-                        <span>Plan:</span>
+                        <span>План:</span>
                         <span id="summary-tariff-name">-</span>
                     </div>
                     <div class="summary-row total">
-                        <span>Total:</span>
+                        <span>Итого:</span>
                         <span id="summary-amount">$0.00</span>
                     </div>
                 </div>
 
                 <form id="payment-form">
                     <div class="form-group">
-                        <label for="card-element">Card Information</label>
+                        <label for="card-element">Данные карты</label>
                         <div id="card-element" class="card-element"></div>
                         <div id="card-errors" class="error-message"></div>
                     </div>
@@ -100,7 +100,7 @@
                     <div class="error-message" id="payment-error"></div>
 
                     <button type="submit" class="btn-primary" id="btn-pay">
-                        <span class="btn-text">Pay Now</span>
+                        <span class="btn-text">Оплатить</span>
                         <span class="btn-spinner" style="display: none;">
                             <svg class="spinner" viewBox="0 0 50 50">
                                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
@@ -113,18 +113,18 @@
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 1L3 3.5V7.5C3 10.81 5.24 13.74 8 14.5C10.76 13.74 13 10.81 13 7.5V3.5L8 1Z"/>
                     </svg>
-                    <span>Secured by Stripe</span>
+                    <span>Защищено Stripe</span>
                 </div>
             </div>
 
-            <!-- Step 5: Processing -->
+            <!-- Шаг 5: Обработка платежа -->
             <div id="step-processing" class="step" style="display: none;">
                 <div class="processing-container">
                     <svg class="spinner-large" viewBox="0 0 50 50">
                         <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
                     </svg>
-                    <h2>Processing Payment...</h2>
-                    <p>Please wait while we confirm your payment</p>
+                    <h2>Обрабатываем платёж...</h2>
+                    <p>Пожалуйста, подождите, пока мы подтверждаем ваш платёж</p>
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 ## Purpose
 
-Provide a FastAPI backend for "Harmoni" – a nutrition platform that calculates personalized calorie needs, offers meal plans, handles Stripe payments, and delivers PDF materials to customers while managing client inquiries through Telegram/email notifications.
+Provide a FastAPI backend for "KatBalance" – a nutrition platform that calculates personalized calorie needs, offers meal plans, handles Stripe payments, and delivers PDF materials to customers while managing client inquiries through Telegram/email notifications.
 
 ## Tech Stack
 

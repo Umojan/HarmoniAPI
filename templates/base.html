@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Админ-панель{% endblock %} - HarmoniAPI</title>
+    <title>{% block title %}Админ-панель{% endblock %} - KatBalance</title>
     <link rel="stylesheet" href="/static/css/admin.css">
     {% block extra_css %}{% endblock %}
 </head>
@@ -11,7 +11,7 @@
     {% if current_admin %}
     <header>
         <nav>
-            <a href="/admin/dashboard" class="logo">Harmoni Админ</a>
+            <a href="/admin/dashboard" class="logo">KatBalance Админ</a>
             <ul class="nav-links">
                 <li><a href="/admin/dashboard" {% if active_page == 'dashboard' %}class="active"{% endif %}>Панель управления</a></li>
                 <li><a href="/admin/tariffs" {% if active_page == 'tariffs' %}class="active"{% endif %}>Тарифы</a></li>

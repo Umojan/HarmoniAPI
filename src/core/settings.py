@@ -14,12 +14,12 @@ class Settings(BaseSettings):
     )
 
     # Application
-    app_name: str = "HarmoniAPI"
+    app_name: str = "KatBalanceAPI"
     app_version: str = "0.1.0"
     debug: bool = False
 
     # Database
-    database_url: str = "postgresql+asyncpg://user:password@localhost/harmoni"
+    database_url: str = "postgresql+asyncpg://user:password@localhost/katbalance"
 
     # Security
     secret_key: str = "your-secret-key-change-in-production"
@@ -72,7 +72,7 @@ class Settings(BaseSettings):
 
 Ваши материалы прикреплены к этому письму.
 
-Спасибо, что выбрали Harmoni!"""
+Спасибо, что выбрали KatBalance!"""
 
     payment_failure_email_subject: str = "Ошибка оплаты - {tariff_name}"
     payment_failure_email_body: str = """Здравствуйте, {name}!
@@ -83,7 +83,7 @@ class Settings(BaseSettings):
 Пожалуйста, попробуйте снова или свяжитесь с поддержкой.
 
 С уважением,
-Команда Harmoni"""
+Команда KatBalance"""
 
     # Contact Form Email Templates
     contact_form_email_subject: str = "Новая заявка на консультацию - {name}"

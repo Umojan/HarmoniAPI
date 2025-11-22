@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Failed - Harmoni</title>
+    <title>Ошибка оплаты - KatBalance</title>
     <link rel="stylesheet" href="/static/payment/css/payment.css">
 </head>
 <body>
@@ -16,28 +16,28 @@
                 </svg>
             </div>
 
-            <h1>Payment Failed</h1>
+            <h1>Ошибка оплаты</h1>
             <p class="result-message">
                 {% if reason %}
                     {{ reason }}
                 {% else %}
-                    We couldn't process your payment. Please try again or use a different payment method.
+                    Не удалось обработать ваш платёж. Попробуйте снова или используйте другой способ оплаты.
                 {% endif %}
             </p>
 
             <div class="info-box">
-                <p><strong>Common reasons for payment failure:</strong></p>
+                <p><strong>Частые причины ошибки оплаты:</strong></p>
                 <ul>
-                    <li>Insufficient funds</li>
-                    <li>Card declined by issuing bank</li>
-                    <li>Incorrect card information</li>
-                    <li>Card not authorized for online payments</li>
+                    <li>Недостаточно средств на карте</li>
+                    <li>Карта отклонена банком-эмитентом</li>
+                    <li>Неверные данные карты</li>
+                    <li>Карта не авторизована для онлайн-платежей</li>
                 </ul>
             </div>
 
             <div class="action-buttons">
-                <a href="/payment/checkout{% if tariff_id %}?tariff_id={{ tariff_id }}{% endif %}" class="btn-primary">Try Again</a>
-                <a href="https://simplest-arrow-687167.framer.app/" class="btn-secondary">Back to Home</a>
+                <a href="/payment/checkout{% if tariff_id %}?tariff_id={{ tariff_id }}{% endif %}" class="btn-primary">Попробовать снова</a>
+                <a href="https://simplest-arrow-687167.framer.app/" class="btn-secondary">Вернуться на главную</a>
             </div>
         </div>
     </div>

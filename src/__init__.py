@@ -1,1 +1,1 @@
-"""HarmoniAPI - FastAPI backend for Harmoni nutrition platform."""
+"""KatBalanceAPI - FastAPI backend for KatBalance nutrition platform."""

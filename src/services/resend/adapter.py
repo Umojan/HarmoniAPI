@@ -46,17 +46,17 @@ class ResendAdapter:
             params: resend.Emails.SendParams = {
                 "from": self.from_email,
                 "to": [to_email],
-                "subject": "Код верификации Harmoni",
+                "subject": "Код верификации KatBalance",
                 "html": f"""
                     <html>
                         <body>
-                            <h2>Добро пожаловать в Harmoni, {name}!</h2>
+                            <h2>Добро пожаловать в KatBalance, {name}!</h2>
                             <p>Ваш код верификации:</p>
                             <h1 style="color: #4CAF50; letter-spacing: 5px;">{code}</h1>
                             <p>Этот код истекает через {settings.verification_code_ttl_minutes} минут.</p>
                             <p>Если вы не запрашивали этот код, просто проигнорируйте это письмо.</p>
                             <br>
-                            <p>С уважением,<br>Команда Harmoni</p>
+                            <p>С уважением,<br>Команда KatBalance</p>
                         </body>
                     </html>
                 """,
