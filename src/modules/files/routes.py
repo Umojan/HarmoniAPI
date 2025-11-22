@@ -1,12 +1,15 @@
 """File storage routes."""
 
 import uuid
+from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, UploadFile, status
+from fastapi import APIRouter, Depends, File, UploadFile, status, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.dependencies import get_current_admin
 from src.core.logging import get_logger
+from src.core.settings import settings
 from src.db.engine import get_session
 from src.modules.admin.models import Admin
 from src.modules.files.schemas import FileListResponse, FileUploadResponse
@@ -133,3 +136,77 @@ async def delete_file(
     await file_service.delete_file(file_id)
 
     logger.info(f"Admin {current_admin.email} deleted file {file_id}")
+
+
+@router.get(
+    "/download/{download_uuid}",
+    status_code=status.HTTP_200_OK,
+)
+async def download_file(
+    download_uuid: uuid.UUID,
+    session: AsyncSession = Depends(get_session),
+) -> FileResponse:
+    """Download file using secure download link.
+
+    Args:
+        download_uuid: Download link UUID from email
+        session: Database session
+
+    Returns:
+        PDF file for download
+
+    Raises:
+        HTTPException 404: If download link not found
+        HTTPException 410: If download limit exceeded
+    """
+    file_service = FileService(session)
+
+    # Get download link
+    download_link = await file_service.get_download_link_by_uuid(download_uuid)
+    if not download_link:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ссылка на скачивание не найдена",
+        )
+
+    # Check download limit
+    if download_link.downloads_count >= download_link.max_downloads:
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail=f"Лимит скачиваний исчерпан ({download_link.max_downloads} из {download_link.max_downloads})",
+        )
+
+    # Get file record
+    file_record = await file_service.get_file_by_id(download_link.file_id)
+    if not file_record:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Файл не найден",
+        )
+
+    # Build file path
+    upload_dir = Path(settings.upload_dir)
+    file_path = upload_dir / file_record.file_path
+
+    if not file_path.exists():
+        logger.error(f"Physical file not found: {file_path}")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Файл не найден на сервере",
+        )
+
+    # Increment download count
+    await file_service.increment_download_count(download_uuid)
+    await session.commit()
+
+    logger.info(
+        f"File downloaded: {file_record.filename} by {download_link.user_email} "
+        f"({download_link.downloads_count + 1}/{download_link.max_downloads})"
+    )
+
+    # Return file for download
+    return FileResponse(
+        path=str(file_path),
+        media_type="application/pdf",
+        filename=file_record.filename,
+    )

@@ -83,9 +83,9 @@ class ResendAdapter:
         tariff_name: str,
         amount: int,
         currency: str,
-        pdf_paths: list[str] | None = None,
+        download_links: list[dict[str, str]] | None = None,
     ) -> None:
-        """Send payment success email with optional PDF attachments.
+        """Send payment success email with download links.
 
         Args:
             to_email: Recipient email address
@@ -93,7 +93,7 @@ class ResendAdapter:
             tariff_name: Name of purchased tariff
             amount: Payment amount in minor currency units (cents)
             currency: Currency code (e.g., 'usd')
-            pdf_paths: Optional list of absolute paths to PDF files to attach
+            download_links: Optional list of dicts with 'filename' and 'url' keys
 
         Raises:
             Exception: If email sending fails
@@ -101,6 +101,18 @@ class ResendAdapter:
         try:
             # Format amount (convert from cents to dollars/euros/etc)
             formatted_amount = f"{amount / 100:.2f}"
+
+            # Format download links
+            links_html = ""
+            if download_links:
+                links_list = []
+                for link in download_links:
+                    links_list.append(
+                        f"📄 <a href=\"{link['url']}\">{link['filename']}</a>"
+                    )
+                links_html = "<br>".join(links_list)
+            else:
+                links_html = "Материалы скоро будут доступны."
 
             subject = settings.payment_success_email_subject.format(
                 tariff_name=tariff_name
@@ -110,31 +122,16 @@ class ResendAdapter:
                 tariff_name=tariff_name,
                 amount=formatted_amount,
                 currency=currency.upper(),
+                download_links=links_html,
+                max_downloads=settings.download_link_max_uses,
             )
 
             params: resend.Emails.SendParams = {
                 "from": self.from_email,
                 "to": [to_email],
                 "subject": subject,
-                "html": f"<html><body><pre>{body}</pre></body></html>",
+                "html": f"<html><body><div style='white-space: pre-line;'>{body}</div></body></html>",
             }
-
-            # Attach PDFs if provided
-            if pdf_paths:
-                attachments = []
-                for pdf_path in pdf_paths:
-                    path = Path(pdf_path)
-                    if path.exists():
-                        with open(pdf_path, "rb") as f:
-                            attachments.append({
-                                "filename": path.name,
-                                "content": list(f.read()),  # Convert bytes to list of ints
-                            })
-                    else:
-                        logger.warning(f"PDF file not found: {pdf_path}")
-
-                if attachments:
-                    params["attachments"] = attachments
 
             # Run blocking Resend call in thread pool
             email_response = await asyncio.to_thread(resend.Emails.send, params)
@@ -144,7 +141,7 @@ class ResendAdapter:
                     "email_id": email_response.get("id"),
                     "recipient": to_email,
                     "tariff": tariff_name,
-                    "attachments_count": len(pdf_paths) if pdf_paths else 0,
+                    "links_count": len(download_links) if download_links else 0,
                 },
             )
 

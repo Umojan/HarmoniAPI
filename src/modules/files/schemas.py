@@ -29,3 +29,15 @@ class FileListResponse(BaseModel):
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class DownloadLinkResponse(BaseModel):
+    """Download link response schema."""
+
+    download_uuid: uuid.UUID
+    file_id: uuid.UUID
+    filename: str
+    downloads_remaining: int
+    download_url: str
+
+    model_config = {"from_attributes": True}

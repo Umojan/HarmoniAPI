@@ -161,6 +161,81 @@ class FileService:
 
         logger.info(f"File record deleted: {file_id}")
 
+    async def create_download_link(
+        self, file_id: uuid.UUID, user_email: str
+    ) -> "DownloadLink":
+        """Create a secure download link for a file.
+
+        Args:
+            file_id: File UUID
+            user_email: Email of user who purchased the file
+
+        Returns:
+            Created download link record
+
+        Raises:
+            FileNotFoundException: If file not found
+        """
+        from src.modules.files.models import DownloadLink
+
+        # Verify file exists
+        file_record = await self.get_file_by_id(file_id)
+        if not file_record:
+            raise FileNotFoundException(str(file_id))
+
+        # Create download link
+        download_link = DownloadLink(
+            download_uuid=uuid.uuid4(),
+            file_id=file_id,
+            user_email=user_email,
+            downloads_count=0,
+            max_downloads=settings.download_link_max_uses,
+        )
+
+        self.session.add(download_link)
+        await self.session.flush()
+
+        logger.info(
+            f"Download link created: {download_link.download_uuid} for file {file_id}"
+        )
+        return download_link
+
+    async def get_download_link_by_uuid(
+        self, download_uuid: uuid.UUID
+    ) -> "DownloadLink | None":
+        """Get download link by UUID.
+
+        Args:
+            download_uuid: Download link UUID
+
+        Returns:
+            Download link record or None
+        """
+        from src.modules.files.models import DownloadLink
+
+        stmt = select(DownloadLink).where(DownloadLink.download_uuid == download_uuid)
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
+    async def increment_download_count(self, download_uuid: uuid.UUID) -> None:
+        """Increment download count for a link.
+
+        Args:
+            download_uuid: Download link UUID
+        """
+        from src.modules.files.models import DownloadLink
+
+        stmt = select(DownloadLink).where(DownloadLink.download_uuid == download_uuid)
+        result = await self.session.execute(stmt)
+        link = result.scalar_one_or_none()
+
+        if link:
+            link.downloads_count += 1
+            await self.session.flush()
+            logger.info(
+                f"Download count incremented: {download_uuid} (count: {link.downloads_count})"
+            )
+
     async def _verify_tariff_exists(self, tariff_id: uuid.UUID) -> None:
         """Verify that tariff exists.
 

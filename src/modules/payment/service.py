@@ -218,21 +218,36 @@ class PaymentService:
         # Get tariff name
         tariff_name = await self._get_tariff_name(payment.tariff_id)
 
-        # Get tariff files (PDFs to attach)
-        pdf_paths: list[str] = []
+        # Get tariff files and generate download links
+        download_links: list[dict[str, str]] = []
         if payment.tariff_id:
+            from src.modules.files.service import FileService
+
+            file_service = FileService(self.session)
+
             stmt = select(TariffFile).where(TariffFile.tariff_id == payment.tariff_id)
             result = await self.session.execute(stmt)
             files = list(result.scalars().all())
 
-            # Build absolute paths
-            upload_dir = Path(settings.upload_dir)
+            # Create download links for each file
             for file_record in files:
-                file_path = upload_dir / file_record.file_path
-                if file_path.exists():
-                    pdf_paths.append(str(file_path))
-                else:
-                    logger.warning(f"PDF file not found: {file_path}")
+                try:
+                    download_link = await file_service.create_download_link(
+                        file_id=file_record.id,
+                        user_email=user.email,
+                    )
+                    download_url = f"{settings.download_base_url}/files/download/{download_link.download_uuid}"
+                    download_links.append({
+                        "filename": file_record.filename,
+                        "url": download_url,
+                    })
+                    logger.info(
+                        f"Download link created for file {file_record.filename}: {download_url}"
+                    )
+                except Exception as e:
+                    logger.error(
+                        f"Failed to create download link for file {file_record.id}: {e}"
+                    )
 
         # Send email via Resend
         try:
@@ -242,14 +257,14 @@ class PaymentService:
                 tariff_name=tariff_name,
                 amount=payment.amount,
                 currency=payment.currency,
-                pdf_paths=pdf_paths if pdf_paths else None,
+                download_links=download_links if download_links else None,
             )
 
             logger.info(
                 f"Success email sent to {user.email}",
                 extra={
                     "payment_id": str(payment.id),
-                    "pdf_count": len(pdf_paths),
+                    "links_count": len(download_links),
                 },
             )
         except Exception as e:

@@ -47,6 +47,10 @@ class Settings(BaseSettings):
     upload_dir: str = "uploads"
     max_upload_size_mb: int = 10
 
+    # Download Links
+    download_link_max_uses: int = 3
+    download_base_url: str = "https://katbalanceapi-production.up.railway.app"
+
     # Calculator
     calculator_calorie_deficit: int = 500
     calculator_calorie_surplus: int = 300
@@ -70,7 +74,10 @@ class Settings(BaseSettings):
 Ваш платеж за {tariff_name} прошел успешно!
 Сумма: {amount} {currency}
 
-Ваши материалы прикреплены к этому письму.
+Ссылки для скачивания ваших материалов:
+{download_links}
+
+Каждую ссылку можно использовать до {max_downloads} раз.
 
 Спасибо, что выбрали KatBalance!"""
 
